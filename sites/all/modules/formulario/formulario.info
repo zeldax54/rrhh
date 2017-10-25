@@ -1,0 +1,5 @@
+name = Formulario
+description = Modulo para crear un boton para postularse
+package=MIS MODULOS
+core = 7.x
+dependencies[] = views

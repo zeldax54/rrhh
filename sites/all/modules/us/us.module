@@ -1,0 +1,215 @@
+<?php
+//$ID$
+/**
+ @file
+ Modulo para uso restringido del admin
+*/
+
+function us_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('prueba')
+	);
+	return $blocks;
+}
+
+function us_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('us_form');
+	return $block;
+}
+
+function us_menu(){
+	$items = Array();
+	$items['us/form'] = Array(
+									'title' => t('prueba'),
+									'page callback' => t('us_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('prueba'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+static $pivote = 0;
+function us_form(){
+	return drupal_get_form('us_my_form');
+}
+
+function us_my_form($form , &$form_state){
+	/*$form = Array(
+							'#attributes' => Array('enctype' => "multipart/form-data"),
+							
+							);*/
+		$form['competencias'] = Array(
+							'#type' => 'fieldset',
+							'#title' => t('Competencias Evaluadas'),
+							'#collapsible' => TRUE,
+							'#collapsed' => FALSE,
+							);
+			$form['competencias']['comp1'] = Array(
+						'#type' => 'select',
+						'#title' => t('Adaptación y Flexibilidad ante los cambios'),
+						'#options' => array(t('--Seleccionar--'),t('Regular'), t('Media'), t('Media-Alta'), t('Alta')),
+						);
+			$form['competencias']['comp2'] = Array(
+						'#type' => 'select',
+						'#title' => t('Autoaprendizaje'),
+						'#options' => array(t('--Seleccionar--'),t('Regular'), t('Media'), t('Media-Alta'), t('Alta')),
+						);
+			$form['competencias']['comp3'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Autonomía y toma de decisiones'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp4'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Capacidad de Análisis y Síntesis'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp5'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Comunicación escrita'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp6'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Comunicación oral'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp7'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Delegación'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp8'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Dirección y Desarrollo de Personas'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp9'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Disponibilidad'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp10'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Dominio de uno mismo / Autoafirmación'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp11'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Establecimiento de prioridades'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp12'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Establecimiento de relaciones interpersonales'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp13'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Identificación e integración con la empresa'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp14'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Iniciativa'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp15'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Innovación y Creatividad'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp16'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Liderazgo'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp17'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Orientación a resultados'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp18'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Orientación al cliente'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp19'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Persuación y Negociación'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp20'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Resistencia a la presión'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp21'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Planificación y Organización'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp22'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Trabajo en equipo'),
+						'#options' => array(t('Competencia no evaluada'), t('No'),t('Si')),
+						);
+			$form['competencias']['comp24'] = Array(
+						'#type' => 'select',//definir como checbock
+						'#title' => t('Visión de negocio'),
+						'#options' => array(t('--Seleccionar--'),t('Regular'), t('Media'), t('Media-Alta'), t('Alta')),
+						);
+			
+						/*$smallimage = 677;
+		$form['file'] = Array(
+							'#type' => 'file',
+							'#title' => t('Archivo Adjunto'),
+							'#default_value' => $smallimage,
+							'#description' => t('Cargar un archivo, se permiten los formatos .jpg, .jpeg, .png, .gif'),
+							);*/
+		file_load(677);
+		$form['boton'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Aceptar',
+							'#submit' => array('s'),
+							//'#submit' => array('existe_anotacion'),		
+							);
+
+
+	return $form;
+}
+
+
+//por hacer	
+function s($form , &$form_state){
+	/*$id_usuario = 13;//este parametro llega externo, aun no lo tengo 
+	$id_trabajo = 45;//este parametro llega externo, aun no lo tengo 
+	$valor = 1;//este valor es el que me dice cuantas referencias se van a añadir*/
+	/*$file = file_load($form_state['values']['archivo']);
+	$file->status = FILE_STATUS_PERMANENT;
+	file_save($file);
+	print_r($file);//die();
+	
+	
+	
+	
+	 $file = $form_state['storage']['file'];
+	  // We are done with the file, remove it from storage.
+	  unset($form_state['storage']['file']);
+	  // Make the storage of the file permanent.
+	  $file->status = FILE_STATUS_PERMANENT;
+	  // Save file status.
+	  file_save($file);
+	  // Set a response to the user.
+	  drupal_set_message(t('The form has been submitted and the image has been saved, filename: @filename.', array('@filename' => $file->filename)));*/
+	$validators = array('file_validate_extensions' => array('jpg'));
+ 	$file = file_save_upload('file', $validators, 'public://');
+	//sin probar 
+	$file->status = FILE_STATUS_PERMANENT;
+	if(!empty($file)){
+		$fid = $file->fid;
+	}
+	
+	print_r($file);die();
+}

@@ -1,0 +1,12 @@
+<?php
+//$ID$
+/**
+ @file
+ Modulo para mostrar el boton postularse
+*/
+
+function alter_body_form_alter(&$form, &$form_state, $form_id){
+	if($form_id=='oferta_laboral_node_form'){
+		//print_r($form);die();
+	}
+}

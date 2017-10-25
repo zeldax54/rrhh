@@ -1,0 +1,146 @@
+<?php
+/**
+ @file
+ Modulo para crear el formulario prehecho para solicitar mayor información sobre un servicio
+*/
+
+function solicitar_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('Solicitar más Información')
+	);
+	return $blocks;
+}
+
+function solicitar_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('solicitar_form');
+	return $block;
+}
+
+function solicitar_menu(){
+	$items = Array();
+	$items['solicitar/form'] = Array(
+									'title' => t('solicitar'),
+									'page callback' => t('buscador_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('Solicitar más Información'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+
+function solicitar_form(){
+	return drupal_get_form('solicitar_my_form');
+}
+
+function solicitar_my_form($form_state){
+	
+	$form['su_nombre'] = Array(
+						'#type' => 'textfield',
+						'#title' => t('Nombre'),
+						'#value' => nombre(),
+						'#required' => TRUE,
+						'#disabled' => TRUE,
+                        );
+	$form['email'] = Array(
+						'#type' => 'textfield',
+						'#title' => t('Correo'),
+						'#value' => email(),
+						'#required' => TRUE,
+						'#disabled' => TRUE,
+                        );
+	$form['asunto'] = Array(
+						'#type' => 'select',
+						'#title' => t('Seleccione el servicio'),
+						'#options' => array(t('Consultoría y Desarrollo'), t('Evaluación de personal'), t('Orientación Vocacional'), t('Investigación de mercado')),
+                        '#required' => TRUE,
+						);
+	$form['mensaje'] = Array(
+						'#type' => 'textarea',
+						'#title' => t('Texto que desee agregar'),
+						);
+	$form['boton1'] = Array(
+						'#type' => 'submit',
+						'#value' => 'Enviar Solicitud',
+						'#submit' => array('enviar'),
+					     );
+						
+	return $form;
+}
+function nombre(){
+	global $user;
+	if (existe()) {
+			$result = $user->name;
+			return $result;
+		}
+	$result = 'Entra tu nombre';
+	return $result;
+}
+
+function email(){
+	global $user;
+	if (existe()) {
+			$result = $user->mail;
+			return $result;
+		}
+	$result = 'Entra tu dirección de correo';
+	return $result;
+}
+
+function existe(){
+	global $user;
+	$id_usuario = $user->uid;
+	if ($id_usuario == 0) {
+			return false;
+		}
+return true;
+}
+
+function enviar($form , &$form_state){
+	$to = $form_state['values']['email'];
+	
+	$language = language_default();
+	$asunto = $form_state['input']['asunto'];
+	$validar = select($asunto);
+	if($validar==0 ){
+		return form_set_error(1, t('El campo: Seleccione el servicio es obligatorio'));
+	}
+	$sms = $form_state['input']['mensaje'];
+	$params = array(
+        'subject' => $validar,
+        'body' => check_markup(
+          t($sms),
+          'plain_text'
+        ),
+      );
+	
+	$message = drupal_mail('solicitar', 'Solicitud', $to, $language, $params, true);
+	//revisar este metodo
+}
+function solicitar_mail($key, &$message, $params) {
+  if (isset($params['subject'])) {
+    $message['subject'] = $params['subject'];
+  } 
+  if (isset($params['body'])) {
+    $message['body'][] = $params['body']; 
+  }
+  if (isset($params['headers']) && is_array($params['headers'])) {   
+    $message['headers'] += $params['headers'];
+  }
+  }
+  function select($valor){
+	
+	if($valor == 0){
+		return t('Consultoría y Desarrollo');
+	}
+	if($valor == 1){
+		return t('Evaluación de personal');
+	}
+	if($valor == 2){
+		return t('Orientación Vocacional');
+	}
+	if($valor == 3){
+		return t('Investigación de mercado');
+	}
+	else return 0; 
+}

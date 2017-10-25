@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * @file
+ * Modulo para alterar la consulta de la vista de ofertas laborales
+ */
+
+function alter_query_views_query_alter(&$view, &$query) {
+ 
+
+
+} 

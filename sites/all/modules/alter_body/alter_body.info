@@ -1,0 +1,4 @@
+name = Altera body
+description = Modulo para alterar el body te el tipo de contenido ofertas laborales
+package = Mis modulos
+core = 7.x

@@ -1,0 +1,136 @@
+<?php
+//$ID$
+/**
+ @file
+ Modulo para mostrar el boton postularse
+*/
+
+function formulario_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('Boton de Postulación')
+	);
+	return $blocks;
+}
+
+function formulario_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('formulario_form');
+	return $block;
+}
+
+function formulario_views_api() {
+    return array(
+    'api' => 3,
+  );
+}
+
+
+function formulario_menu(){
+	$items = Array();
+	$items['formulario/form'] = Array(
+									'title' => t('Boton Postulación'),
+									'page callback' => t('formulario_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('Formulario para postularse'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+
+function formulario_form(){
+	return drupal_get_form('formulario_my_form');
+}
+
+function formulario_my_form($form_state){
+	$form['idoferta'] = Array(
+						'#type' => 'textfield',	
+                        '#attributes'=>array(
+						'class'=>array(
+						'textid'
+						),'style'=>'display:none'));
+
+
+						
+	$form['boton1'] = Array(
+						'#type' => 'submit',
+						'#value' => 'Postularse',
+						'#submit' => array('postularse'),
+					     );
+
+	$form['boton2'] = Array(
+						'#type' => 'submit',
+						'#value' => 'Deshacer Postulación',
+						'#submit' => array('nopostularse'),
+						);
+						 
+	$form['#attached']['js']=array(drupal_get_path('module','formulario').'/js/val.js',);
+	return $form;
+}
+
+function doble_postulacion($id_usuario, &$id_trabajo){
+	//selecciono desde la bd
+	$consulta = db_query("SELECT * FROM oferta_candidato")->fetchAll();
+	
+	foreach($consulta as $valor){
+			if (($id_usuario == $valor->uid) && ($id_trabajo == $valor->oferta_id)){
+				return true;
+			}
+	}
+	return false;
+}
+function CV($id_usuario){
+	//selecciono desde la bd
+	$consulta = db_query("SELECT uid FROM webform_submissions")->fetchAll();
+	
+	foreach($consulta as $valor){
+			if ($id_usuario == $valor->uid){
+				return true;
+			}
+	}
+	return false;
+}
+
+function postularse($form , &$form_state){
+	global $user;
+	//obtengo el id del usuario autenticado.
+	$id_usuario = $user->uid;
+	//obtengo id de la propuesta de trabajo
+	$id_trabajo=$form_state['input']['idoferta'];
+	//si no se ah logueado
+	if ($id_usuario == 0) {
+		return form_set_error($id_usuario, t('Para postularse debe estar logueado'));
+	} 
+	//si aun no tiene el cv en el sitio
+	else if(CV($id_usuario) == 0){
+		return form_set_error($id_usuario, t('Para postularse debe ingresar su CV'));
+	}
+	//si ya esta postulado para esta oferta de trabajo
+	else if(doble_postulacion($id_usuario, $id_trabajo) == 1){
+			return form_set_error($id_usuario, t('Vos ya se postulo para esta oferta de trabajo'));
+	}
+	else 	
+		db_insert('oferta_candidato')->fields(array('uid' => $id_usuario,'oferta_id' => $id_trabajo))->execute();
+		db_insert('historial_ofertas')->fields(array('id_usuario' => $id_usuario,'id_trabajo' => $id_trabajo))->execute();
+		return drupal_set_message('Tu postulación ha sido exitosa.');
+	
+}
+
+function nopostularse($form , &$form_state){
+	global $user;
+	//obtengo el id del usuario autenticado.
+	$id_usuario = $user->uid;
+	//obtengo id de la propuesta de trabajo
+	$id_trabajo=$form_state['input']['idoferta'];
+	//si no se ah logueado
+	if(doble_postulacion($id_usuario, $id_trabajo) == 1){
+		db_delete('oferta_candidato')->condition('uid',$id_usuario)->condition('oferta_id',$id_trabajo)->execute();
+		return drupal_set_message(t('Vos acaba de desechar esta propuesta de trabajo'));
+	}
+	else 	
+		return form_set_error($id_usuario, t('Para deshacer una postulación vos debe estar postulado previamente'));
+}
+
+
+
+
+

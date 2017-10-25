@@ -1,0 +1,4 @@
+name = probando file
+description = Modulo para probar el uso de files
+package = Mis modulos
+core = 7.x

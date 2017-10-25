@@ -1,0 +1,4 @@
+name = Buscador
+description = Modulo para el buscador de postulantes
+package = Mis modulos
+core = 7.x

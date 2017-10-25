@@ -1,0 +1,4 @@
+name = Uso restringido del administrador
+description = Modulo para administrar
+package = Mis modulos
+core = 7.x

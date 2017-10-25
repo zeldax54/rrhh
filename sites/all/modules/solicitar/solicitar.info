@@ -1,0 +1,4 @@
+name = Solicitar más Información
+description = Modulo para crear el formulario prehecho para solicitar mayor información sobre un servicio
+package = Mis modulos
+core = 7.x

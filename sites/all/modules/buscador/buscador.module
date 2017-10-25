@@ -1,0 +1,46 @@
+<?php
+/**
+ @file
+ Modulo para el buscador de postulantes
+*/
+//esto es para que sea un bloque para ponerlo luego donde querramos
+function buscador_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('Buscador de Postulantes')
+	);
+	return $blocks;
+}
+//este es el view del bloque
+function buscador_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('buscador_form');
+	return $block;
+}
+//esto es lo mismo que formulario_menu pero con el nombre que debe tener (buscador)
+function buscador_menu(){
+	$items = Array();
+	$items['buscador/form'] = Array(
+									'title' => t('buscador'),
+									'page callback' => t('buscador_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('Buscador de postulantes'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+//esto creo que siempre es necesario
+function buscador_form(){
+	return drupal_get_form('buscador_my_form');
+}
+//y aqui declares los elementos del formulario te deje uno por ejemplo para que te guies
+function buscador_my_form($form_state){
+	
+	$form['idoferta'] = Array(
+						'#type' => 'textfield',
+						'#value' => 'todo tuyo',
+                        );
+						
+	return $form;
+}
+///es todo tuyo metele 
+//para ir viendo lo que vas haciendo el bloque lo meti dentro de una pag que esta en esta dir http://localhost/porto/prueba_buscador 

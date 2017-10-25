@@ -1,0 +1,461 @@
+<?php
+//$ID$
+/**
+ @file
+ Modulo para uso restringido del admin
+*/
+
+function usoadmin_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('Uso restringido del Administrador')
+	);
+	return $blocks;
+}
+
+function usoadmin_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('usoadmin_form');
+	return $block;
+}
+
+function usoadmin_menu(){
+	$items = Array();
+	$items['usoadmin/form'] = Array(
+									'title' => t('Uso restringido del Administrador'),
+									'page callback' => t('usoadmin_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('Uso restringido del Administrador'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+static $pivote = 0;
+function usoadmin_form(){
+	return drupal_get_form('usoadmin_my_form');
+}
+
+function usoadmin_my_form($form , &$form_state){
+	$form = Array(
+							'#attributes' => Array('enctype' => "multipart/form-data"),
+							
+							);
+		$form['idoferta'] = Array(
+							'#type' => 'textfield',	
+							'#attributes'=>array('class'=>array('textid'),
+							'style'=>'display:none'
+							));
+		$form['iduser'] = Array(
+							'#type' => 'textfield',	
+							'#attributes'=>array('class'=>array('textid'),
+							'style'=>'display:none'
+							));
+		
+	$re = existe_anotacion();
+	$form['#tree'] = TRUE;
+		if(empty($form_state['num_names'])){
+			$form_state['num_names'] = 1;
+		}
+	if($re == 0){
+		$form['archivo'] = Array(
+							'#type' => 'file',
+							'#title' => t('Archivo Adjunto'),
+							'#description' => t('Cargar un archivo, se permiten los formatos .jpg, .jpeg, .png, .gif'),
+							);
+		$form['comentarios'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Comentarios'),
+							);
+		$form['entrevista'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Entrevista'),
+							);
+		$form['situacion_del_postulante'] = Array(
+							'#type' => 'select',
+							'#title' => t('Situación del postulante'),
+							'#options' => array(0 => t('Participa de búsquedas'), 1 => t('Malas Referencias'), 2 => t('Seleccionado'), 3 => t('No Presentable'), 4 => t('Entrevistado'), 5 => t('Buen Postulante/ Potencial')),
+							'#default_value' => 1,
+							);	
+		$form['area_de_desarrollo'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Área de desarrollo'),
+							);
+		$form['potencial'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Potencial'),
+							);
+		$form['competencias_evaluadas'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Competencias evaluadas'),
+							);
+		$form['caracteristicas_personales_evaluadas'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Características personales evaluadas'),
+							);
+		$form['ref'] = Array(
+							'#type' => 'item',
+							'#title' => t('Referencias'),
+							);
+		/*$form['#tree'] = TRUE;
+		if(empty($form_state['num_names'])){
+			$form_state['num_names'] = 1;
+		}*/
+		for($i = 1; $i <= $form_state['num_names']; $i++){
+				$form['referencias'] = Array(
+							'#type' => 'fieldset',
+							'#title' => t('Referencia').' '.$i,
+							'#collapsible' => TRUE,
+							'#collapsed' => FALSE,
+							);
+				$form['referencias']['empresa'.'_'.$i] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Empresa'.' '.$i),
+							);
+				$form['referencias']['periodo_trabajado'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Periodo trabajado'),
+									);
+				$form['referencias']['fecha_de_la_referencia'.'_'.$i] = Array(
+									'#type' => 'date_popup',
+									'#title' => t('Fecha de la referencia'.' '.$i),
+									'#timepicker' => 'timepicker',
+									'#default_value' => date('Y-m-d'),
+									'#date_format'   => 'Y-m-d',
+									'#date_year_range' => '0:+5',
+									'#datepicker_options' => array('minDate' => 0, 'maxDate' => 0),
+									);						
+				$form['referencias']['Contacto'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Contacto'.' '.$i),
+									);
+				$form['referencias']['vinculo_con_el_postulante'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Vínculo con el postulante'.' '.$i),
+									);
+				$form['referencias']['comentarios_otorgados'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Comentarios otorgados por la persona contactada'.' '.$i),
+									);
+		
+		}
+		
+		$form['add'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Agregar otra referencia',
+							'#submit' => array('add_more'),
+							 );
+		if($form_state['num_names'] > 1){
+			$form['remove'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Eliminar ultima referencia',
+							'#submit' => array('remove'),
+							'#limit_validation_errors' => array(),
+							 );
+		}
+		$form['boton'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Aceptar',
+							'#submit' => array('salvar'),
+							//'#submit' => array('existe_anotacion'),		
+							);
+	}
+	else {
+		//aqui partiendo del id del archivo cargarlo
+		$idfile = $re[0]->idfile;
+		$form['archivo'] = Array(
+							'#type' => 'file',
+							'#title' => t('Archivo Adjunto'),
+							'#description' => t('Cargar un archivo, se permiten los formatos .jpg, .jpeg, .png, .gif'),
+							);
+		//aqui partiendo del id del archivo cargarlo
+		$form['comentarios'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Comentarios'),
+							'#value' => $re[0]->comentario,
+							);
+		$form['entrevista'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Entrevista'),
+							'#value' => $re[0]->entrevista,
+							);
+		$form['situacion_del_postulante'] = Array(
+							'#type' => 'select',
+							'#title' => t('Situación del postulante'),
+							'#options' => array(0 => t('Participa de búsquedas'), 1 => t('Malas Referencias'), 2 => t('Seleccionado'), 3 => t('No Presentable'), 4 => t('Entrevistado'), 5 => t('Buen Postulante/ Potencial')),
+							);
+												
+		$form['area_de_desarrollo'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Área de desarrollo'),
+							'#value' => $re[0]->area_desarrollo,
+							);
+		$form['potencial'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Potencial'),
+							'#value' => $re[0]->potencial,
+							);
+		$form['competencias_evaluadas'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Competencias evaluadas'),
+							'#value' => $re[0]->competencias,
+							);
+		$form['caracteristicas_personales_evaluadas'] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Características personales evaluadas'),
+							'#value' => $re[0]->caracteristicas,
+							);
+		$form['ref'] = Array(
+							'#type' => 'item',
+							'#title' => t('Referencias'),
+							);
+		/*$form['#tree'] = TRUE;
+		if(empty($form_state['num_names'])){
+			$form_state['num_names'] = 1;
+		}*/
+		for($i = 1; $i <= $form_state['num_names']; $i++){
+				$form['referencias'] = Array(
+							'#type' => 'fieldset',
+							'#title' => t('Referencia').' '.$i,
+							'#collapsible' => TRUE,
+							'#collapsed' => FALSE,
+							);
+				$v='empresa'.'_'.$i;
+				$form['referencias']['empresa'.'_'.$i] = Array(
+							'#type' => 'textfield',
+							'#title' => t('Empresa'.' '.$i),
+							'#value' => $re[0]->$v,
+							);
+				$v='periodo'.'_'.$i;
+				$form['referencias']['periodo_trabajado'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Periodo trabajado'),
+									'#value' => $re[0]->$v,
+									);
+				$v='fecha'.'_'.$i;
+				$form['referencias']['fecha_de_la_referencia'.'_'.$i] = Array(
+									'#type' => 'date_popup',
+									'#title' => t('Fecha de la referencia'.' '.$i),
+									'#timepicker' => 'timepicker',
+									'#default_value' => $re[0]->$v,//date('Y-m-d'),
+									'#date_format'   => 'Y-m-d',
+									'#date_year_range' => '0:+5',
+									'#datepicker_options' => array('minDate' => 0, 'maxDate' => 0),
+									);
+				$v='contacto'.'_'.$i;
+				$form['referencias']['Contacto'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Contacto'.' '.$i),
+									'#value' => $re[0]->$v,
+									);
+				$v='vinculo'.'_'.$i;
+				$form['referencias']['vinculo_con_el_postulante'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Vínculo con el postulante'.' '.$i),
+									'#value' => $re[0]->$v,
+									);
+				$v='c_persona'.'_'.$i;
+				$form['referencias']['comentarios_otorgados'.'_'.$i] = Array(
+									'#type' => 'textfield',
+									'#title' => t('Comentarios otorgados por la persona contactada'.' '.$i),
+									'#value' => $re[0]->$v,
+									);
+		}
+		
+		$form['add'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Agregar otra referencia',
+							'#submit' => array('add_more'),
+							 );
+		if($form_state['num_names'] > 1){
+			$form['remove'] = Array(
+							'#type' => 'submit',
+							'#value' => 'Eliminar ultima referencia',
+							'#submit' => array('remove'),
+							'#limit_validation_errors' => array(),
+							 );
+		}
+		$form['boton'] = Array(
+								'#type' => 'submit',
+								'#value' => 'Modificar',
+								'#submit' => array('modificar'),
+							 );
+	}
+	
+	return $form;
+}
+
+function add_more($form , &$form_state){
+	print_r($form_state);die();
+	if (!isset($form_state['num_names'])) {
+		print_r('if');
+		$form_state['num_names'] = 1;
+    }
+	else {
+        $form_state['num_names']++;
+		print_r('else');
+    }
+	print_r($form_state['num_names']);die();
+	//$form_state['rebuild'] = TRUE;
+	return usoadmin_my_form($form ,$form_state);
+	//print_r($form_state['num_names']);die();
+}
+function remove($form , &$form_state){
+	if($form_state['num_names'] > 1){
+		$form_state['num_names']--;
+	}
+	$form_state['rebuild'] = TRUE;
+}
+
+//por hacer	
+function salvar($form , &$form_state){
+	
+	$id_usuario = 13;//este parametro llega externo, aun no lo tengo 
+	$id_trabajo = 45;//este parametro llega externo, aun no lo tengo 
+	$valor = 1;//este valor es el que me dice cuantas referencias se van a añadir
+	add_colum($valor);
+	//obtengo el id del archivo subido
+	$idfile = save_file($form,$form_state);
+	if(empty($idfile)){
+		$idfile = "";
+	}
+	$query ="INSERT INTO anotaciones (id_usuario, id_trabajo, idfile, comentario, entrevista, sit_post, area_desarrollo, potencial, competencias, caracteristicas,";
+	$valores = " VALUES ( ".$id_usuario." , "
+							.$id_trabajo." , '"
+							.$idfile."' , '"
+							.$form_state['input']['comentarios']."' , '"
+							.$form_state['input']['entrevista']."' , '"
+							.valor_select($form_state['input']['situacion_del_postulante'])."' , '"
+							.$form_state['input']['area_de_desarrollo']."' , '"
+							.$form_state['input']['potencial']."' , '"
+							.$form_state['input']['competencias_evaluadas']."' , '"
+							.$form_state['input']['caracteristicas_personales_evaluadas']."' , '";
+	
+	
+	
+	//estos son los datos dinamicos
+	for($i = 1; $i <= $valor; $i++){
+		$query = $query.' empresa'.'_'.$i.', periodo'.'_'.$i.', fecha'.'_'.$i.', Contacto'.'_'.$i.', vinculo'.'_'.$i.', c_persona'.'_'.$i.',';
+		$valores = $valores.' '.$form_state['input']['referencias']['empresa'.'_'.$i]."' , '"
+							   .$form_state['input']['referencias']['periodo_trabajado'.'_'.$i]."' , '"
+							   .$form_state['input']['referencias']['fecha_de_la_referencia'.'_'.$i]['date']."' , '"
+							   .$form_state['input']['referencias']['Contacto'.'_'.$i]."' , '"
+							   .$form_state['input']['referencias']['vinculo_con_el_postulante'.'_'.$i]."' , '"
+							   .$form_state['input']['referencias']['comentarios_otorgados'.'_'.$i]."' , '"	;	
+
+	}
+	$i = strlen($query);
+	$f = strlen($valores);
+	$valores[$f-1] = "";
+	//$valores[$f-2] = "";
+	$valores[$f-3] = ")";
+	$query[$i-1] = "";
+	$query = $query.')'.$valores;
+	db_query($query);
+	return drupal_set_message('Anotaciones salvas de forma exitosa.');
+}
+//por hacer	
+function modificar($form , &$form_state){
+	$re = existe_anotacion();
+	
+	$id_usuario = $re[0]->id_usuario; 
+	$id_trabajo = $re[0]->id_trabajo; 
+	//validar($form , $form_state);
+	//obtengo el id del archivo subido
+	$idfile = save_file($form,$form_state);
+	if(empty($idfile)){
+		$idfile = "";
+	}
+	$valor = 1;//este valor es el que me dice cuantas referencias se van a añadir
+	//add_colum($valor);
+	$query ="UPDATE anotaciones SET ";
+	$query = $query."idfile='".$idfile."', ";
+	$query = $query."comentario='".$form_state['input']['comentarios']."', ";
+	$query = $query."entrevista='".$form_state['input']['entrevista']."', ";
+	$query = $query."entrevista='".$form_state['input']['entrevista']."', ";
+	$query = $query."sit_post='".valor_select($form_state['input']['situacion_del_postulante'])."', ";
+	$query = $query."area_desarrollo='".$form_state['input']['area_de_desarrollo']."', ";
+	$query = $query."potencial='".$form_state['input']['potencial']."', ";
+	$query = $query."competencias='".$form_state['input']['competencias_evaluadas']."', ";
+	$query = $query."caracteristicas='".$form_state['input']['caracteristicas_personales_evaluadas']."', ";
+	
+	//estos son los datos dinamicos
+	for($i = 1; $i <= $valor; $i++){
+		$query = $query."empresa".'_'.$i."='".$form_state['input']['referencias']['empresa'.'_'.$i]."', ";
+		$query = $query."periodo".'_'.$i."='".$form_state['input']['referencias']['periodo_trabajado'.'_'.$i]."', ";
+		$query = $query."fecha".'_'.$i."='".$form_state['input']['referencias']['fecha_de_la_referencia'.'_'.$i]['date']."', ";
+		$query = $query."Contacto".'_'.$i."='".$form_state['input']['referencias']['Contacto'.'_'.$i]."', ";
+		$query = $query."vinculo".'_'.$i."='".$form_state['input']['referencias']['vinculo_con_el_postulante'.'_'.$i]."', ";
+		$query = $query."c_persona".'_'.$i."='".$form_state['input']['referencias']['comentarios_otorgados'.'_'.$i]."' ";
+		
+	}
+	db_query($query);
+	return drupal_set_message('Actualización exitosa.');
+
+}
+
+function add_colum($valor){
+	//definiendo el valor de i
+	$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='anotaciones'";
+	$resultado = db_query($query)->fetchAll();
+	$inicial = ((sizeof($resultado)-9)/6)+1;
+	$valor=1;
+	if($inicial <= $valor){
+		for($i = $inicial; $i <= $valor; $i++){
+			$query = "ALTER TABLE anotaciones ADD ";
+			$aux = $query.''.'empresa'.'_'.$i." VARCHAR(250) NULL";
+			db_query($aux);
+			$aux = $query.''.' periodo'.'_'.$i." VARCHAR(250) NULL";
+			db_query($aux);
+			$aux = $query.''.' fecha'.'_'.$i." DATE";
+			db_query($aux);
+			$aux = $query.''.' Contacto'.'_'.$i." VARCHAR(250) NULL";
+			db_query($aux);
+			$aux = $query.''.' vinculo'.'_'.$i." VARCHAR(250) NULL";
+			db_query($aux);
+			$aux = $query.''.' c_persona'.'_'.$i." VARCHAR(250) NULL";
+			db_query($aux);
+		}
+	}
+}
+
+function existe_anotacion(){
+	$id_usuario = 3;//este parametro llega externo, aun no lo tengo 
+	$id_trabajo = 45;//este parametro llega externo, aun no lo tengo 
+	$consulta = db_query("SELECT * FROM anotaciones WHERE id_usuario = ".$id_usuario." AND id_trabajo = ".$id_trabajo)->fetchAll();
+	if(empty($consulta)){
+		return 0;
+	}
+	return $consulta;
+}
+function valor_select($valor){
+	if($valor == 0){
+		return t('Participa de búsquedas');	
+	}
+	if($valor == 1){
+		return t('Malas Referencias');
+	}
+	if($valor == 2){
+		return t('Seleccionado');
+	}
+	if($valor == 3){
+		return t('No Presentable');
+	}
+	if($valor == 4){
+		return t('Entrevistado');
+	}
+	if($valor == 5){
+		return t('Buen Postulante/ Potencial');
+	}
+	
+}
+
+function save_file($form , &$form_state){
+	$validators = array('file_validate_extensions' => array('jpg'));
+ 	$file = file_save_upload('file', $validators, 'public://');
+	//sin probar 
+	$file->status = FILE_STATUS_PERMANENT;
+	if(!empty($file)){
+		$fid = $file->fid;
+	}
+	
+	return $file->fid;
+}

@@ -1,0 +1,126 @@
+<?php
+//$ID$
+/**
+ @file
+ Modulo para mostrar el boton postularse
+*/
+
+function formulario_block_info(){
+	$blocks = Array();
+	$blocks['info'] = Array(
+		'info' => t('Boton de Postulación')
+	);
+	return $blocks;
+}
+
+function formulario_block_view($delta = ''){
+	$block = Array();
+	$block['content'] = drupal_get_form('formulario_form');
+	return $block;
+}
+
+function formulario_menu(){
+	$items = Array();
+	$items['formulario/form'] = Array(
+									'title' => t('Boton Postulación'),
+									'page callback' => t('formulario_form'),
+									'access arguments' => Array('access content'),
+									'description' => t('Formulario para postularse'),
+									'type' => MENU_CALLBACK,);
+	return $items;
+}
+
+function formulario_form(){
+	return drupal_get_form('formulario_my_form');
+}
+
+function formulario_my_form($form_state){
+	$form['idoferta'] = Array(
+						'#type' => 'textfield',	
+                        '#attributes'=>array(
+						'class'=>array(
+						'textid'
+						),'style'=>'display:none'));
+						
+	$form['submit'] = Array(
+						'#type' => 'submit',
+						'#value' => t('Postularse'),
+
+					     );
+						
+	$form['#attached']['js']=array(drupal_get_path('module','formulario').'/js/val.js',);
+	return $form;
+}
+
+function formulario_my_form_validate($form, &$form_state){
+	
+	
+	/*
+	global $user;
+	//si no se ah logueado o registrado
+	if ($user->uid == 0) {
+		drupal_set_message(t('Para postularse debe estar logueado y registrado en nuestro sitio'));
+	} 
+	else 
+		//si ya esta postulado para esta oferta de trabajo
+		if(doble_postulacion() == 1){
+			drupal_set_message(t('Vos ya se postulo para esta oferta de trabajo'));
+		}
+	*/
+}
+
+function doble_postulacion($id_usuario, &$id_trabajo){
+	//selecciono desde la bd
+	$consulta = db_query("SELECT * FROM relacion")->fetchAll();
+	
+	foreach($consulta as $valor){
+			if (($id_usuario == $valor->id_usuario) && ($id_trabajo == $valor->id_trabajo)){
+				return true;
+			}
+	}
+	return false;
+}
+function CV($id_usuario){
+	//selecciono desde la bd
+	$consulta = db_query("SELECT uid FROM webform_submissions")->fetchAll();
+	//print_r($consulta[2]->uid);die();
+	foreach($consulta as $valor){
+			if ($id_usuario == $valor->uid){
+				return true;
+			}
+	}
+	return false;
+}
+
+function formulario_my_form_submit($form , &$form_state){
+	
+	return formulario_my_form_insert($form,$form_state);
+}
+
+function formulario_my_form_insert($form , &$form_state){
+
+	global $user;
+	//obtengo el id del usuario autenticado.
+	$id_usuario = $user->uid;
+	//obtengo id de la propuesta de trabajo, esto aun no se como.
+	//$id_trabajo = $form->idoferta;
+	//print_r($form_state['input']['idoferta']);die();
+	//print_r($id_trabajo);die();
+	$id_trabajo=$form_state['input']['idoferta'];
+	//si no se ah logueado
+	if ($id_usuario == 0) {
+		return form_set_error($id_usuario, t('Para postularse debe estar logueado'));
+	} 
+	//si aun no tiene el cv en el sitio
+	else if(CV($id_usuario) == 0){
+		return form_set_error($id_usuario, t('Para postularse debe ingresar su CV'));
+	}
+	//si ya esta postulado para esta oferta de trabajo
+	else if(doble_postulacion($id_usuario, $id_trabajo) == 1){
+			return form_set_error($id_usuario, t('Vos ya se postulo para esta oferta de trabajo'));
+	}
+	else 	
+		db_insert('relacion')->fields(array('id_usuario' => $id_usuario,'id_trabajo' => $id_trabajo))->execute();
+		return drupal_set_message('Vos se ah postulado correctamente');
+	
+}

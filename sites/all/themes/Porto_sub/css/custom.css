@@ -1,0 +1,197 @@
+/*=======================================================================
+*** PORTO_SUB STYLE SHEET***
+========================================================================*/
+/*nuestros servicios*/
+.row .col-md-8 .row .col-md-6 .feature-box .feature-box-info .shorter {
+color:black;
+height: 60px;
+}
+/*aplicaciones tec*/
+.row .col-md-4 .feature-box .feature-box-info .shorter {
+color:black;
+/*height: 60px;
+width: 750px;*/
+}
+/*te encontraras*/
+.home-intro .container .row .col-md-8 {
+ /*width: 750px;*/
+}
+/*tamaño del div trabajo*/
+.home-intro .container .row .col-md-8 h {
+ font-size: 1.55em;
+}
+.home-intro .container .row .col-md-8 h em {
+ font-family: 'lunabar';
+}
+.home-intro .container .row .col-md-8 p {
+ font-family: 'colaborate_light';
+}
+/*ancho del boton*/
+.home-intro .container .row .col-md-4 {
+ width: 170px;
+}
+/*tamaño de aplicaciones*/
+.row .col-md-4 h2 {
+height: 60px;
+width: 750px;
+}
+/*Encabezado del footer*/
+#footer .footer-ribbon span {
+font-family: 'LUNABAR';
+}
+/*letras del grafico*/
+.home-concept strong {
+	font-family: 'LUNABAR';
+}
+/*ponemos*/
+.container {
+ font-family: 'colaborate_light';
+}
+/*css al formulario*/
+.webform-progressbar-outer  {
+	height: 2.2em;
+	border-radius: 5px;
+}
+.webform-progressbar-inner  {
+	height: 2.1em;
+	border-radius: 5px;
+	background-color: #e55c00;
+	border: 1px solid black;
+}
+.webform-progressbar-page {
+	/*height: 3.6em;
+	border: 0.1em solid #e55c00;*/
+	height: 0px;
+	border: 0px;
+	width: 0px;
+}
+.webform-container-inline label {
+    font-size: 1.4em;
+}
+form label {
+    font-size: 1.4em;
+}
+.body .form-text, .body .form-textarea {
+    width: 45%;
+	border: 1px solid #356900;
+	
+}
+.webform-component-textarea .grippie {
+    width: 45%;
+}
+.resizable-textarea .grippie {
+    width: 45%;
+}
+select[multiple], select[size] {
+    height: 3.5em;
+	width: 23em;
+}
+select {
+    height: 2em;
+    border-radius: 1px;
+	border: 1px solid #356900;
+	border-radius: 5px;
+}
+.bloque {
+    width: 100%;
+}
+.alert-success {
+    font-size: 2em;
+}
+.col-md-12 {
+    /*background-color: black;*/
+}
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+    /*font-family: 'LUNABAR';*/
+	font-size: 1.2em;
+	border: 1px solid black;
+}
+h2.word-rotator-title {
+   /* color: white;*/
+}
+.btn-primary, .pagination > .active > a .owl-theme .owl-controls .owl-nav [class*="owl-"] {
+/*font-family: 'LUNABAR';*/
+}
+.postularse {
+   height: 3.5em;
+   text-align: top;
+	/*width: 5em;*/
+}
+.postularse .boton{
+   height: 2em;
+   text-align: right;
+	/*width: 5em;*/
+}
+.postulaciones {
+   height: 2em;
+   text-align: right;
+   font-style: italic;
+	/*width: 5em;*/
+}
+.regisblok  {
+   text-align: right;
+   font-size: 1.6em
+}
+.regisblok  a{
+   /*font-size: 1.2em;*/
+}
+.bloke {
+   font-size: 1.5em;
+}
+.bloke h2{
+   font-size: 1.6em;
+}
+.poslabel {
+   font-size: 1.4em;
+}
+div.home-intro {
+padding:28px;
+}
+#header .search {
+   margin: 1px 0 0 15px;
+}
+#header nav ul.nav-main li a {
+    font-size: 15px;
+}
+#header nav ul.nav-main ul.dropdown-menu > li > a {
+    font-size: 1.1em;
+ }
+ .feature-box {
+    height: 60px;
+}
+#col4 {
+	margin-top: 74px;
+}
+#contacto {
+	margin-top: 7px;
+}
+.home-concept {
+    height: 38em;
+}
+#c4 {
+    margin-left: 700px;
+}
+#bloque {
+    font-size: 1.5em;
+}
+.accordion-toggle {
+    font-size: 1.6em;
+}
+
+.form-item, .form-actions {
+    width: 35em;
+}
+
+
+.views-table{
+	width:100%;
+}
+
+.tablemsj{
+	margin-left: 7% !important;
+}
+
+.notlogmsj{
+	width: 59%;
+margin-left: 7%;
+}

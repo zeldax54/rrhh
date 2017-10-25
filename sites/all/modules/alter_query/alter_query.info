@@ -1,0 +1,4 @@
+name = Altera Consulta SQL
+description = Modulo para alterar la consulta de la vista de ofertas laborales
+package = Mis modulos
+core = 7.x

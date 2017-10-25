@@ -1,0 +1,4 @@
+name = Mis Postulaciones
+description = Modulo para ver las postulaciones del usuario logueado
+package=MIS MODULOS
+core = 7.x

@@ -1,0 +1,21 @@
+<?php
+
+function formulario_schema() {
+  $schema['oferta_candidato'] = array(
+    'description' => 'Tabla para guardar la relacion de postulados a una oferta.',
+    'fields' => array(
+      'id' => array('type' => 'serial','not null' => TRUE,'description' => 'Primary Key'),
+      'nid' => array('type' => 'int','not null' => TRUE),
+      'uid' => array('type' => 'int','not null' => TRUE),    
+    ),
+
+	
+    'primary key' => array('id'),
+	
+	
+  );
+  
+  return $schema;
+}
+
+
