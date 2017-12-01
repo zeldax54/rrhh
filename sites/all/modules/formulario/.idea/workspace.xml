@@ -31,8 +31,8 @@
       <file leaf-file-name="formulario.module" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/formulario.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2220339">
-              <caret line="43" column="41" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.42372882">
+              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
               <folding>
                 <marker date="1508900974496" expanded="true" signature="1583:1613" placeholder="SELECT * FRO... relacion" />
                 <marker date="1508900974496" expanded="true" signature="1855:1890" placeholder="SELECT uid F... webform_submissions" />
@@ -54,7 +54,7 @@
       <file leaf-file-name="formulario.views.inc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/formulario.views.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.692308">
+            <state vertical-scroll-proportion="0.0">
               <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
               <folding>
                 <element signature="e#7#52#0#PHP" expanded="true" />
@@ -237,7 +237,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../cialesymf" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="D:\ProysTmp\Node\nodejs\node.exe" />
   </component>
@@ -335,6 +335,35 @@
     </PATH>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/formulario.module">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1508900974496" expanded="true" signature="1583:1613" placeholder="SELECT * FRO... relacion" />
+            <marker date="1508900974496" expanded="true" signature="1855:1890" placeholder="SELECT uid F... webform_submissions" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/formulario.info">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/formulario.views.inc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
+          <folding>
+            <element signature="e#7#52#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/formulario.module">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -480,7 +509,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/formulario.views.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-22.692308">
+        <state vertical-scroll-proportion="0.0">
           <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
           <folding>
             <element signature="e#7#52#0#PHP" expanded="true" />
@@ -490,8 +519,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/formulario.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2220339">
-          <caret line="43" column="41" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.42372882">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding>
             <marker date="1508900974496" expanded="true" signature="1583:1613" placeholder="SELECT * FRO... relacion" />
             <marker date="1508900974496" expanded="true" signature="1855:1890" placeholder="SELECT uid F... webform_submissions" />
